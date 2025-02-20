@@ -117,3 +117,22 @@ def menu(request):
     return render(request, "menu.html",{
                     "form": form,
             })
+
+def jugadors(request):
+    jugadors = Jugador.objects.all()  # Obtener todos los jugadores
+    classificacio_gols = []
+
+    for jugador in jugadors:
+        gols = jugador.event_set.filter(tipus_esdeveniment="gol").count()
+        classificacio_gols.append({
+            "nom": jugador.nom,
+            "equip": jugador.equip.nom,
+            "gols": gols
+        })
+
+    # Ordenar por número de goles en orden descendente
+    classificacio_gols.sort(key=lambda x: x["gols"], reverse=True)
+
+    return render(request, "jugadors.html", {
+        "classificacio_gols": classificacio_gols
+    })
