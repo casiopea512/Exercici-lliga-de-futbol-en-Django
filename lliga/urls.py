@@ -20,6 +20,9 @@ from django.urls import path
 from futbol import views
 
 urlpatterns = [
-    path('classificacio/',views.classificacio ),
+    # path('classificacio/',views.classificacio ),
     path('admin/', admin.site.urls),
+    path("", views.menu, name="menu"), #en la raíz te lleva al menú
+    path("nou_jugador",views.nou_jugador, name="nou_jugador"),
+    path("classificacio/<int:lliga_id>", views.classificacio, name="classificacio"), #obligar a pasarle un número (int)
 ]

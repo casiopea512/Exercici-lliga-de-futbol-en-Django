@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from futbol.models import *
+from django import forms
 
-def classificacio(request):
-    lliga = Lliga.objects.all()[1]
+def classificacio(request,lliga_id): # a la view de classificació le llega el request y la lliga_id desde la view de 'menú' 
+    lliga = Lliga.objects.get(id=lliga_id)
     equips = lliga.equips.all()
     classi = []
 
@@ -72,3 +74,46 @@ def classificacio(request):
         'lliga': lliga,
         "classificacio": classi,
     })
+
+class MenuForm(forms.Form):
+    #query que creas con el nombre lligueta
+    lligueta = forms.ModelChoiceField(queryset=Lliga.objects.all())
+    dades = forms.CharField(required=False) # añades en el form más campos, como por ejemplo un campo
+
+class JugadorForm(forms.ModelForm):
+    class Meta: # son modificaciones de la clase que no se verán en el formulario
+        model = Jugador
+        fields = "__all__"
+
+def nou_jugador(request):
+    
+
+    if request.method == "POST":
+        form = JugadorForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('nou_jugador')
+    else:
+        form = JugadorForm()
+    return render(request, "menu.html", {"form":form})
+
+def menu(request):
+    #instanciamos el objeto MenuForm que hemos hecho antes
+    form = MenuForm()
+
+    #si se llama a esta view desde post significa que han hecho submit en el form
+    if request.method == "POST":
+        form = MenuForm(request.POST)
+
+        #comprueba que sea correcto
+        if form.is_valid():
+
+            # para acceder a los datos una vez que las ha validado.
+            lliga = form.cleaned_data.get("lligueta")
+            # cridem a /classificacio/<lliga_id>
+            return redirect('classificacio',lliga.id)
+        
+    return render(request, "menu.html",{
+                    "form": form,
+            })

@@ -1,0 +1,10 @@
+<h1>Menu Lligues</h1>
+
+<p>Selecciona la lliga:</p>
+ 
+<form method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+ 
+	<input type="submit" name="submit" value="Tramet la consulta">
+</form>
