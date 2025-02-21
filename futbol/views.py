@@ -136,3 +136,31 @@ def jugadors(request):
     return render(request, "jugadors.html", {
         "classificacio_gols": classificacio_gols
     })
+
+def matriu_gols(request, lliga_id):
+    lliga = Lliga.objects.get(id=lliga_id)
+    equips = list(lliga.equips.all())  # Convertimos el QuerySet en una lista
+    partits = lliga.partits.all()
+
+    # Crear un diccionario para almacenar los goles
+    resultats = {equip.id: 9{e.id: "" for e in equips} for equip in equips}
+
+    for partit in partits:
+        resultats[partit.equip_local.id][partit.equip_visitant.id] = f"{partit.gols_locals()} - {partit.gols_visitants()}"
+
+    # Construir una matriz lista para la tabla
+    matriu = []
+    for equip_fila in equips:
+        fila = [equip_fila.nom]  # Primera celda con el nombre del equipo
+        for equip_columna in equips:
+            if equip_fila.id == equip_columna.id:
+                fila.append("X") # celda en la que coincide el equipo con sí mismo
+            else:
+                fila.append(resultats[equip_fila.id][equip_columna.id])
+        matriu.append(fila)
+
+    return render(request, "matriu_gols.html", {
+        "lliga": lliga,
+        "equips": equips,
+        "matriu": matriu,  # Pasamos la tabla ya lista
+    })

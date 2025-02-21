@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Matriu de Gols - {{ lliga.nom }}</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        thead tr th:nth-child(1){
+            background-color: pink;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        th {
+            background-color: #ddd;
+        }
+        tbody tr td:nth-child(1){
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Matriu de Gols - {{ lliga.nom }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th></th>  <!-- Celda vacía en la esquina superior izquierda -->
+                {% for equip in equips %}
+                    <th>{{ equip.nom }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in matriu %}
+            <tr>
+                {% for celda in fila %}
+                    <td>{{ celda }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

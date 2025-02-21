@@ -26,4 +26,5 @@ urlpatterns = [
     path("nou_jugador",views.nou_jugador, name="nou_jugador"),
     path("classificacio/<int:lliga_id>", views.classificacio, name="classificacio"), #obligar a pasarle un número (int)
     path("jugadors", views.jugadors, name="jugadors"),
+    path("matriu_gols/<int:lliga_id>/", views.matriu_gols, name="matriu_gols"),
 ]
