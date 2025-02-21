@@ -143,7 +143,7 @@ def matriu_gols(request, lliga_id):
     partits = lliga.partits.all()
 
     # Crear un diccionario para almacenar los goles
-    resultats = {equip.id: 9{e.id: "" for e in equips} for equip in equips}
+    resultats = {equip.id: {e.id: "" for e in equips} for equip in equips}
 
     for partit in partits:
         resultats[partit.equip_local.id][partit.equip_visitant.id] = f"{partit.gols_locals()} - {partit.gols_visitants()}"
